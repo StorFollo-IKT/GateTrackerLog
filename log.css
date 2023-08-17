@@ -1,0 +1,19 @@
+table, th, td {
+    border: 1px solid;
+}
+.itemNavigation {
+    font-size: small;
+    margin-bottom: 10px;
+}
+
+.loginForm ul, .itemNavigation ul, .userActions ul, .collectionTypes ul, .publicationCountries ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.loginForm li, .itemNavigation li, .userActions li, .collectionTypes li, .publicationCountries li {
+    display: inline;
+    padding: 0px;
+    margin: 0px;
+}

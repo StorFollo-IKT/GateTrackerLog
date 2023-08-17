@@ -1,0 +1,31 @@
+{% extends 'base.twig' %}
+{% block body %}
+
+    <nav class="itemNavigation">
+        <ul>
+            {% if prev is not empty %}
+                <li><a href="?date={{ prev|date('Y-m-d') }}">&lt;&lt; {{ prev|date('Y-m-d') }}</a></li>
+            {% endif %}
+            <li>{{ date|date('Y-m-d') }}</li>
+            {% if next is not empty %}
+                <li><a href="?date={{ next|date('Y-m-d') }}">{{ next|date('Y-m-d') }} &gt;&gt;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Tid</th>
+            <th>Gate</th>
+            <th>Tittel</th>
+        </tr>
+        {% for line in lines %}
+            <tr>
+                <td>{{ line.Id }}</td>
+                <td>{{ line.DateTime }}</td>
+                <td>{{ line.GateNo }}</td>
+                <td>{{ line.Title }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
