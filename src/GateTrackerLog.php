@@ -46,17 +46,43 @@ class GateTrackerLog
         return $path;
     }
 
+    public function previous(DateTimeImmutable $date): ?DateTimeImmutable
+    {
+        $old = new DateTimeImmutable();
+        $old = $old->modify('-1 year');
+        while ($date > $old)
+        {
+            $date = $date->modify('-1 day');
+            if (file_exists($this->log_file($date)))
+                return $date;
+        }
+        return null;
+    }
+
+    public function next(DateTimeImmutable $date): ?DateTimeImmutable
+    {
+        $today = new DateTimeImmutable();
+        while ($date < $today)
+        {
+            $date = $date->modify('+1 day');
+            if (file_exists($this->log_file($date)))
+                return $date;
+        }
+        return null;
+    }
+
     public function show_log(DateTimeImmutable $date = null)
     {
-        $prev = $date->modify('-1 day');
-        $next = $date->modify('+1 day');
         $today = new DateTimeImmutable();
+        if (empty($date))
+            $date = $today;
+        $prev = $this->previous($date);
+        $next = $this->next($date);
+
         if ($next > $today || !file_exists($this->log_file($next)))
             $next = null;
         if (!file_exists($this->log_file($prev)))
             $prev = null;
-        if (empty($date))
-            $date = $today;
 
         if (!file_exists($this->log_file($date)))
         {
