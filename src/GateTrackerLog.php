@@ -27,13 +27,14 @@ class GateTrackerLog
 
     function __construct()
     {
-        $this->config = require __DIR__ . '/../config.php';
+        $this->config = config($_GET['site'] ?? null);
         if (!empty($_SERVER['SCRIPT_NAME']))
             $this->web_root = dirname($_SERVER['SCRIPT_NAME']);
         $this->project_root = dirname(__FILE__, 2);
 
         $loader = new Twig\Loader\FilesystemLoader(array(__DIR__ . '/../templates'), __DIR__);
         $this->twig = new Twig\Environment($loader, array('strict_variables' => true));
+        $this->twig->addExtension(new GateTrackerExtension());
     }
 
     public function log_file(DateTimeImmutable $date = null): string
@@ -85,17 +86,17 @@ class GateTrackerLog
             $prev = null;
 
         if (!file_exists($this->log_file($date)))
-        {
-            echo 'Ingen logg funnet for ' . $date->format('Y-m-d');
-            return;
-        }
+            $iter = [];
+        else
+            $iter = new LogIteratorHeader($this->log_file($date));
 
-        $iter = new LogIteratorHeader($this->log_file($date));
         echo $this->render('log.twig', [
             'lines' => $iter,
             'prev' => $prev,
             'next' => $next,
-            'date' => $date]);
+            'date' => $date,
+            'sites' => sites(),
+        ]);
     }
 
     /**

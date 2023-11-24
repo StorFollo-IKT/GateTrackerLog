@@ -12,20 +12,30 @@
             {% endif %}
         </ul>
     </nav>
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Tid</th>
-            <th>Gate</th>
-            <th>Tittel</th>
-        </tr>
-        {% for line in lines %}
-            <tr>
-                <td>{{ line.Id }}</td>
-                <td>{{ line.DateTime }}</td>
-                <td>{{ line.GateNo }}</td>
-                <td>{{ line.Title }}</td>
-            </tr>
+    {% if sites|length > 1 %}
+        <strong>Velg bibliotek:</strong>
+        {% for site in sites %}
+            <a href="?site={{ site }}&date={{ date|date('Y-m-d') }}">{{ site }}</a>&nbsp;
         {% endfor %}
-    </table>
+    {% endif %}
+    {% if lines %}
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Tid</th>
+                <th>Gate</th>
+                <th>Tittel</th>
+            </tr>
+            {% for line in lines %}
+                <tr>
+                    <td>{{ line.Id }}</td>
+                    <td>{{ line.DateTime|parseDate|date('d.m.Y H:i') }}</td>
+                    <td>{{ line.GateNo|gateName }}</td>
+                    <td>{{ line.Title }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Ingen logg funnet for {{ date|date('d.m.Y') }}</p>
+    {% endif %}
 {% endblock %}
