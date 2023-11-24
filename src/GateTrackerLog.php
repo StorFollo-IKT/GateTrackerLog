@@ -96,6 +96,7 @@ class GateTrackerLog
             'next' => $next,
             'date' => $date,
             'sites' => sites(),
+            'site' => site(),
         ]);
     }
 

@@ -4,18 +4,22 @@
     <nav class="itemNavigation">
         <ul>
             {% if prev is not empty %}
-                <li><a href="?date={{ prev|date('Y-m-d') }}">&lt;&lt; {{ prev|date('Y-m-d') }}</a></li>
+                <li><a href="?site={{ site }}&date={{ prev|date('Y-m-d') }}">&lt;&lt; {{ prev|date('Y-m-d') }}</a></li>
             {% endif %}
             <li>{{ date|date('Y-m-d') }}</li>
             {% if next is not empty %}
-                <li><a href="?date={{ next|date('Y-m-d') }}">{{ next|date('Y-m-d') }} &gt;&gt;</a></li>
+                <li><a href="?site={{ site }}&date={{ next|date('Y-m-d') }}">{{ next|date('Y-m-d') }} &gt;&gt;</a></li>
             {% endif %}
         </ul>
     </nav>
     {% if sites|length > 1 %}
         <strong>Velg bibliotek:</strong>
-        {% for site in sites %}
-            <a href="?site={{ site }}&date={{ date|date('Y-m-d') }}">{{ site }}</a>&nbsp;
+        {% for site_iter in sites %}
+            {% if site!=site_iter %}
+                <a href="?site={{ site_iter }}&date={{ date|date('Y-m-d') }}">{{ site_iter }}</a>&nbsp;
+            {% else %}
+                {{ site }}&nbsp;
+            {% endif %}
         {% endfor %}
     {% endif %}
     {% if lines %}
